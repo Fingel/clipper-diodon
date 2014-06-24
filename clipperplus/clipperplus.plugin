@@ -1,0 +1,8 @@
+[Plugin]
+Module=clipperplus
+Name=Clipper+ Plugin
+Loader=python
+Description=Integrates with the Clipper+ Android Application
+Authors=Austin Riba <root@austinriba.com>
+Copyright=Copyright © 2014 Austin Riba
+Website=http://www.pedaldrivenprogramming.com
