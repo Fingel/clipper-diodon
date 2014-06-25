@@ -5,11 +5,10 @@ import cookielib
 
 
 class CSRFParser(HTMLParser):
-    def __init__(self, url):
+    def __init__(self, data):
         HTMLParser.__init__(self)
         self.ret = ''
-        req = urllib2.urlopen(url)
-        self.feed(req.read())
+        self.feed(data)
 
     def handle_starttag(self, tag, attrs):
         if tag == 'input':
@@ -58,8 +57,12 @@ class ClipperParser:
         opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cj))
         urllib2.install_opener(opener)
 
-        csrf_parser = CSRFParser("https://www.clippersync.com")
+        # get CSRF token from homepage
+        req = urllib2.urlopen("https://www.clippersync.com")
+        csrf_parser = CSRFParser(req.read())
         csrf = csrf_parser.ret
+
+        # do login post and store the page
         data = urlencode({'_csrf_token': csrf, 'email': self.username, 'password': self.password})
         req = urllib2.Request('https://www.clippersync.com/login', data)
         resp = urllib2.urlopen(req)
